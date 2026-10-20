@@ -9,7 +9,7 @@
 | RTL, lint, generic synthesis | PASS local | `reports/status.md` and logs |
 | Bounded formal safety and WAIT reachability | PASS local | `reports/logs/formal-*.log`; not an unbounded proof |
 | User-owned public GitHub repository and Actions | PASS | Public `evan-youan-yu/protocol-emulator-asic`; `test`, `verification`, `docs` first runs passed |
-| GDS, STA, DRC/LVS, precheck, gate-level | PASS cloud | Official run 39417341092; inspected final metrics, Precheck report, and GL XML |
+| GDS, STA, DRC/LVS, precheck, gate-level, viewer | PASS cloud | Fresh official run 39433571551: all four jobs success; inspected metrics and Precheck 9/9 XML |
 | 50 MHz timing | PASS cloud/local | Routed 20 ns constraint, worst setup slack +9.5901 ns; three corners checked |
 | Complete local GDS flow | PASS | Pinned CMOS5L hardening, routed STA, Magic DRC, LVS, antenna and GDS; metrics match cloud run |
 | Local GL test | PASS | Four Cocotb tests on locally generated gate-level netlist, zero failures |
