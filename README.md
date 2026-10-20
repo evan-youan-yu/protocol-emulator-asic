@@ -1,42 +1,18 @@
-![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
+# Programmable Protocol Emulator ASIC
 
-# Tiny Tapeout Verilog Project Template
+Experimental firmware-loaded GPIO sequencer for the [Jane Street Protocol Emulator ASIC Competition](https://blog.janestreet.com/protocol-emulator-asic-competition/). Based on the official Tiny Tapeout `cmos5l` template at SHA `231f26a58b8d2efbab25bef24b29c94362a431a3` (Apache-2.0). The 6×4 tile allocation and 50 MHz target are configured; physical timing and signoff are not yet verified.
 
-- [Read the documentation for project](docs/info.md)
+## Quick start
 
-## What is Tiny Tapeout?
+```sh
+./scripts/setup_env.sh
+make doctor
+make regress
+make report
+```
 
-Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital and analog designs manufactured on a real chip.
+The project-local Conda environment is `.conda`. `make test` drives two distinct firmware images through the Tiny Tapeout top-level pins, checks GPIO, status and PC against a Python cycle model, and creates `test/tb.fst`. `make lint` and `make synth-smoke` run Verilator and generic Yosys. `reports/status.md` summarizes observed local evidence.
 
-To learn more and get started, visit https://tinytapeout.com.
+The current M1 instruction set supports SET, OE, WAIT, JMP, WAIT_PIN and HALT in a 16-word flip-flop memory. The design is an early ASIC-flow baseline, not a complete UART/SPI/I²C product. See [architecture](docs/architecture.md), [ISA](docs/isa.md), [host and pin map](docs/pin_map.md), [timing](docs/timing_contract.md), [verification](docs/verification_plan.md), and [setup](docs/setup.md).
 
-## Set up your Verilog project
-
-1. Add your Verilog files to the `src` folder.
-2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `source_files` and `top_module` properties. If you are upgrading an existing Tiny Tapeout project, check out our [online info.yaml migration tool](https://tinytapeout.github.io/tt-yaml-upgrade-tool/).
-3. Edit [docs/info.md](docs/info.md) and add a description of your project.
-4. Adapt the testbench to your design. See [test/README.md](test/README.md) for more information.
-
-The GitHub action will automatically build the ASIC files using [LibreLane](https://www.zerotoasiccourse.com/terminology/librelane/).
-
-## Enable GitHub actions to build the results page
-
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
-
-## Resources
-
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://www.tinytapeout.com/guides/local-hardening/)
-
-## What next?
-
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
-  - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+The official CMOS5L GDS, precheck, GL test and docs workflows remain in `.github/workflows`. A project GitHub Actions run and CMOS5L PDK are required before claiming GDS, DRC/LVS or 50 MHz timing. See [physical flow](docs/physical_flow.md) and [submission checklist](docs/competition_checklist.md).

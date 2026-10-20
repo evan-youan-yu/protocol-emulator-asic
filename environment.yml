@@ -1,0 +1,16 @@
+name: protocol-emulator-asic
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - make
+  - iverilog
+  - verilator
+  - yosys
+  - z3-solver
+  - pip:
+      - pytest==8.4.2
+      - cocotb==2.0.1
+      - PyYAML==6.0.3
+      - click==8.3.0

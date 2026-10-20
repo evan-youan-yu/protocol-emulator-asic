@@ -11,3 +11,13 @@ test/sim_build
 test/__pycache__/
 test/results.xml
 test/gate_level_netlist.v
+.conda/
+reports/logs/
+reports/status.md
+reports/current.json
+__pycache__/
+.pytest_cache/
+*.pyc
+*.vvp
+formal/core/
+formal/reach/

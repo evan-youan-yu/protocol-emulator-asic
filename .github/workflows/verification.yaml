@@ -1,0 +1,29 @@
+name: verification
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  fast:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: conda-incubator/setup-miniconda@v4
+        with:
+          activate-environment: ''
+          auto-activate: false
+      - name: Build project Conda environment
+        run: |
+          ./scripts/setup_env.sh
+      - name: Record versions and run regression
+        run: |
+          mkdir -p reports/logs
+          make doctor | tee reports/logs/ci-versions.log
+          make regress
+          make formal
+          make report
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: verification-evidence
+          path: |
+            reports/
+            test/results.xml
+            test/tb.fst
