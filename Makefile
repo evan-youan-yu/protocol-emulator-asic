@@ -7,11 +7,21 @@ ifneq ($(wildcard $(ROOT)/.conda/bin/python),)
 else
   PYTHON := python3
 endif
-.PHONY: help doctor config-check python-check lint test synth-smoke regress formal report clean
+.PHONY: help doctor physical-doctor physical-report gds-local gl-local precheck-local config-check python-check lint test synth-smoke regress formal report clean
 help:
-	@printf '%s\n' 'make doctor lint test synth-smoke regress formal report clean'
+	@printf '%s\n' 'make doctor physical-doctor gds-local physical-report gl-local precheck-local lint test synth-smoke regress formal report clean'
 doctor:
 	@./scripts/doctor.sh
+physical-doctor:
+	@./scripts/doctor_physical.sh
+physical-report:
+	@$(PYTHON) scripts/check_physical_results.py runs/wokwi
+gds-local: physical-doctor
+	@./scripts/run_gds_local.sh
+gl-local:
+	@./scripts/run_gl_local.sh
+precheck-local:
+	@./scripts/run_precheck_local.sh
 config-check:
 	@$(PYTHON) scripts/check_config.py
 python-check:

@@ -42,17 +42,24 @@ sys.exit(1 if bad else 0)
 PY
   then bad=1; fi
 fi
-for tool in docker openroad; do
-  if command -v "$tool" >/dev/null; then printf '%-18s INSTALLED\n' "$tool";
-  else printf '%-18s MISSING (optional physical flow)\n' "$tool"; fi
-done
+if command -v docker >/dev/null; then
+  echo 'Docker CLI         INSTALLED'
+else
+  echo 'Docker CLI         MISSING (physical flow)'
+fi
+if command -v openroad >/dev/null; then
+  echo 'OpenROAD host      INSTALLED'
+else
+  echo 'OpenROAD host      NOT INSTALLED (provided by LibreLane container)'
+fi
 if [[ -x "$bin/sby" && -x "$bin/z3" ]]; then
   echo 'Formal tools       INSTALLED (SymbiYosys and Z3)'
 else
   echo 'Formal tools       MISSING'
   bad=1
 fi
-if [[ -n "${PDK_ROOT:-}" && -d "${PDK_ROOT}/ihp-sg13cmos5l" ]]; then
+physical_pdk_root="${PDK_ROOT:-$root/.physical/pdk}"
+if [[ -d "${physical_pdk_root}/ihp-sg13cmos5l" ]]; then
   echo 'CMOS5L PDK        INSTALLED'
 else
   echo 'CMOS5L PDK        NOT VERIFIED'

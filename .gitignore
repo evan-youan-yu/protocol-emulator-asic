@@ -12,8 +12,13 @@ test/__pycache__/
 test/results.xml
 test/gate_level_netlist.v
 .conda/
+.physical/
+/tt
 reports/logs/
 reports/ci/
+reports/local-gl/
+reports/local-precheck/
+reports/local-history/
 reports/status.md
 reports/current.json
 __pycache__/
