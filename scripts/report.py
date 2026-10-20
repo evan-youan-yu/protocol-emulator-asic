@@ -46,13 +46,14 @@ dirty = cmd('git', 'status', '--porcelain') != ''
 origin = cmd('git', 'config', '--get', 'remote.origin.url')
 gh_bin = str(ROOT / '.conda/bin/gh')
 gh_auth = subprocess.run([gh_bin, 'auth', 'status'], cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0 if Path(gh_bin).exists() else False
+ci_snapshot = ROOT / 'docs/ci_evidence.md'
 lines = [
     '# Local verification status',
     '',
     f'Generated: {datetime.now(timezone.utc).isoformat()}',
     f'Template SHA: `{upstream}`',
     f'Current commit: `{sha}`; working tree changed: `{dirty}`',
-    f'GitHub origin: `{origin}`; CLI authenticated: `{gh_auth}`',
+    f'GitHub origin: `{origin}`; CLI auth check in this shell: `{gh_auth}`',
     f'OS: `{next((line.split("=", 1)[1].strip().strip(chr(34)) for line in Path("/etc/os-release").read_text().splitlines() if line.startswith("PRETTY_NAME=")), cmd("uname", "-srm"))}`',
     '',
     '| Check | Status | Evidence |',
@@ -64,8 +65,8 @@ lines = [
     f'| Generic Yosys synthesis | {status("synth.log", "Found and reported 0 problems.")} | `reports/logs/synth.log` |',
     f'| Formal safety BMC depth 20 | {status("formal-core.log", "DONE (PASS")} | `reports/logs/formal-core.log` |',
     f'| Formal WAIT reachability cover | {status("formal-reach.log", "DONE (PASS")} | `reports/logs/formal-reach.log` |',
-    f'| Project GitHub Actions | {"NOT RUN" if origin == "unavailable" else "NOT VERIFIED"} | {"No user-owned origin" if origin == "unavailable" else "Inspect workflow runs and artifacts"} |',
-    '| GDS / STA / DRC / LVS / Precheck / GL test | BLOCKED | No CMOS5L PDK, Docker, or project GitHub Actions run |',
+    f'| Project GitHub Actions | {"RECORDED" if ci_snapshot.exists() else "NOT RUN"} | {"docs/ci_evidence.md is a timestamped CI snapshot" if ci_snapshot.exists() else "No CI evidence snapshot"} |',
+    f'| GDS / STA / DRC / LVS / Precheck / GL test | {"SEE CI SNAPSHOT" if ci_snapshot.exists() else "NOT RUN"} | {"docs/ci_evidence.md; inspect live GitHub run for current status" if ci_snapshot.exists() else "No physical reports recorded"} |',
     '',
     'Generic cell count is not a CMOS5L area estimate. The 50 MHz target remains unverified.',
     f'Yosys generic synthesis reported {cell_count} cells in the latest M1 run. Check the synthesis log for memory mapping and warnings.',
