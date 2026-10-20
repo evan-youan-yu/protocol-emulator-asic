@@ -8,6 +8,7 @@
 | Owner-specific top module and author | PENDING | Current `tt_um_ppe_demo` is provisional |
 | RTL, lint, generic synthesis | PASS local | `reports/status.md` and logs |
 | Bounded formal safety and WAIT reachability | PASS local | `reports/logs/formal-*.log`; not an unbounded proof |
+| User-owned public GitHub repository and Actions | NOT RUN | Owner/account access pending; see `docs/github_setup.md` |
 | GDS, STA, DRC/LVS, precheck, gate-level | BLOCKED | No Docker/CMOS5L PDK/project GitHub Actions run |
 | 50 MHz timing | NOT VERIFIED | Requires routed timing report |
 | UART, SPI, I²C firmware and independent checking | NOT RUN | Future milestones |

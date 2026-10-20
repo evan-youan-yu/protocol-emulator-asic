@@ -10,6 +10,21 @@ check() {
 }
 check conda "$(command -v conda || echo /nonexistent)"
 for tool in python iverilog verilator yosys make; do check "$tool" "$bin/$tool"; done
+if [[ -x "$bin/gh" ]]; then
+  echo 'GitHub CLI         INSTALLED'
+  if "$bin/gh" auth status >/dev/null 2>&1; then
+    echo 'GitHub login       AUTHENTICATED'
+  else
+    echo 'GitHub login       NOT AUTHENTICATED'
+  fi
+else
+  echo 'GitHub CLI         MISSING'
+fi
+if command -v gtkwave >/dev/null; then
+  echo 'GTKWave            INSTALLED'
+else
+  echo 'GTKWave            MISSING (optional waveform viewer)'
+fi
 if [[ -x "$bin/python" ]]; then
   if ! "$bin/python" - <<'PY'
 import importlib.metadata as m

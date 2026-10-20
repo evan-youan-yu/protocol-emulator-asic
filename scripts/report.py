@@ -2,6 +2,7 @@
 """Summarize observed local evidence; never infer physical PASS from configuration."""
 from datetime import datetime, timezone
 from pathlib import Path
+import os
 import re
 import subprocess
 import xml.etree.ElementTree as ET
@@ -42,12 +43,16 @@ upstream = cmd('git', 'rev-parse', 'upstream/cmos5l')
 if upstream == 'unavailable':
     upstream = cmd('git', 'rev-parse', 'origin/cmos5l')
 dirty = cmd('git', 'status', '--porcelain') != ''
+origin = cmd('git', 'config', '--get', 'remote.origin.url')
+gh_bin = str(ROOT / '.conda/bin/gh')
+gh_auth = subprocess.run([gh_bin, 'auth', 'status'], cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0 if Path(gh_bin).exists() else False
 lines = [
     '# Local verification status',
     '',
     f'Generated: {datetime.now(timezone.utc).isoformat()}',
     f'Template SHA: `{upstream}`',
     f'Current commit: `{sha}`; working tree changed: `{dirty}`',
+    f'GitHub origin: `{origin}`; CLI authenticated: `{gh_auth}`',
     f'OS: `{next((line.split("=", 1)[1].strip().strip(chr(34)) for line in Path("/etc/os-release").read_text().splitlines() if line.startswith("PRETTY_NAME=")), cmd("uname", "-srm"))}`',
     '',
     '| Check | Status | Evidence |',
@@ -59,6 +64,7 @@ lines = [
     f'| Generic Yosys synthesis | {status("synth.log", "Found and reported 0 problems.")} | `reports/logs/synth.log` |',
     f'| Formal safety BMC depth 20 | {status("formal-core.log", "DONE (PASS")} | `reports/logs/formal-core.log` |',
     f'| Formal WAIT reachability cover | {status("formal-reach.log", "DONE (PASS")} | `reports/logs/formal-reach.log` |',
+    f'| Project GitHub Actions | {"NOT RUN" if origin == "unavailable" else "NOT VERIFIED"} | {"No user-owned origin" if origin == "unavailable" else "Inspect workflow runs and artifacts"} |',
     '| GDS / STA / DRC / LVS / Precheck / GL test | BLOCKED | No CMOS5L PDK, Docker, or project GitHub Actions run |',
     '',
     'Generic cell count is not a CMOS5L area estimate. The 50 MHz target remains unverified.',
@@ -73,6 +79,8 @@ lines = [
     f'- Yosys: `{cmd(str(ROOT / ".conda/bin/yosys"), "-V")}`',
     f'- Z3: `{cmd(str(ROOT / ".conda/bin/z3"), "--version")}`',
     f'- SymbiYosys source: `79fc9eddca5e33a28cc2f2cd19c9825efd9a7255`',
+    f'- GitHub CLI: `{cmd(gh_bin, "--version").splitlines()[0]}`',
+    f'- GTKWave: `{cmd("dpkg-query", "-W", "-f=${Version}", "gtkwave")}`; GUI display: `{"available" if os.environ.get("DISPLAY") else "unavailable"}`',
 ]
 report = ROOT / 'reports/status.md'
 report.write_text('\n'.join(lines) + '\n')
