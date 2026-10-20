@@ -7,7 +7,7 @@ smtbmc z3
 
 [script]
 read -formal -D FORMAL project.v
-prep -top tt_um_ppe_demo
+prep -top tt_um_evan_youan_yu_ppe
 
 [files]
 src/project.v

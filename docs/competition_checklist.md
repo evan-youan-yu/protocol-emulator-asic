@@ -5,7 +5,7 @@
 | Open-source CMOS5L template | PASS local | SHA recorded in `docs/references.md` |
 | `info.yaml` 6×4 tiles and standard wrapper | CONFIGURED | Official precheck not run |
 | Post-fabrication program loading | PASS RTL | Host-nibble loader tested with two programs; silicon unverified |
-| Owner-specific top module and author | PENDING | Current `tt_um_ppe_demo` is provisional |
+| Owner-specific top module and author | CONFIGURED | GitHub account `evan-youan-yu`; name and owner should be confirmed for final submission |
 | RTL, lint, generic synthesis | PASS local | `reports/status.md` and logs |
 | Bounded formal safety and WAIT reachability | PASS local | `reports/logs/formal-*.log`; not an unbounded proof |
 | User-owned public GitHub repository and Actions | NOT RUN | Owner/account access pending; see `docs/github_setup.md` |

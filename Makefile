@@ -20,7 +20,7 @@ python-check:
 	$(PYTHON) -m pytest -q tests 2>&1 | tee reports/logs/python-test.log
 lint:
 	@mkdir -p reports/logs
-	verilator --lint-only -Wall -Wno-fatal -Wno-DECLFILENAME --top-module tt_um_ppe_demo src/project.v 2>&1 | tee reports/logs/lint.log
+	verilator --lint-only -Wall -Wno-fatal -Wno-DECLFILENAME --top-module tt_um_evan_youan_yu_ppe src/project.v 2>&1 | tee reports/logs/lint.log
 test:
 	@mkdir -p reports/logs
 	$(MAKE) -C test clean
@@ -29,7 +29,7 @@ test:
 	@test -s test/tb.fst
 synth-smoke:
 	@mkdir -p reports/logs
-	yosys -Q -T -l reports/logs/synth.log -p 'read_verilog src/project.v; hierarchy -check -top tt_um_ppe_demo; synth -top tt_um_ppe_demo; check -assert; stat' >/dev/null
+	yosys -Q -T -l reports/logs/synth.log -p 'read_verilog src/project.v; hierarchy -check -top tt_um_evan_youan_yu_ppe; synth -top tt_um_evan_youan_yu_ppe; check -assert; stat' >/dev/null
 regress: config-check python-check lint test synth-smoke
 formal:
 	@mkdir -p reports/logs

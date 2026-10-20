@@ -2,7 +2,7 @@
 `default_nettype none
 
 // M1 experimental programmable protocol engine. See docs/pin_map.md.
-module tt_um_ppe_demo (
+module tt_um_evan_youan_yu_ppe (
     input wire [7:0] ui_in,
     output wire [7:0] uo_out,
     input wire [7:0] uio_in,
