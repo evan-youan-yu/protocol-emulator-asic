@@ -4,4 +4,6 @@ The authoritative flow is `.github/workflows/gds.yaml` from template `cmos5l` SH
 
 The general Tiny Tapeout [local hardening guide](https://tinytapeout.com/guides/local-hardening/) currently shows `ihp-sg13g2` for IHP. Do not copy that PDK setting into this project. A local command should be added only after pinning a CMOS5L-compatible support-tools revision, LibreLane version, PDK revision, container runtime, and validating it against the official action. No `make gds` target is supplied yet.
 
+The template's development container originally pointed at SG13G2. Its Dockerfile is now aligned with the [CMOS5L GDS action defaults](https://github.com/TinyTapeout/tt-gds-action/blob/ihp-cmos5l/action.yml): `ihp-sg13cmos5l` support tools and LibreLane `3.1.0.dev3`. This is a static consistency fix; the container has not been built or used for physical verification here.
+
 On a GitHub repository, enable Actions and run the existing `gds` workflow. Retain the run URL, action version, PDK revision, mapped cell/area report, utilization, setup and hold slack, critical path, routing, DRC/LVS/antenna status, precheck output, GDS artifact, and GL test XML. Negative slack or incomplete checks are failures, not tapeout readiness. Generic Yosys statistics in this repository do not measure CMOS5L cell area.

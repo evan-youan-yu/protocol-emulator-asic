@@ -23,4 +23,12 @@ for needle in (
 test = (root / '.github/workflows/test.yaml').read_text()
 assert 'cocotb_tools.check_results' in test
 assert 'ihp-sg13g2' not in gds
+container = (root / '.devcontainer/Dockerfile').read_text()
+for needle in (
+    'ENV PDK=ihp-sg13cmos5l',
+    'ARG TT_SUPPORT_TOOLS_BRANCH=ihp-sg13cmos5l',
+    'librelane==3.1.0.dev3',
+):
+    assert needle in container, needle
+assert 'ihp-sg13g2' not in container
 print(f'PASS config top={top} tiles=6x4 pdk=ihp-sg13cmos5l')
