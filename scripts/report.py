@@ -80,7 +80,7 @@ lines = [
     f'- Z3: `{cmd(str(ROOT / ".conda/bin/z3"), "--version")}`',
     f'- SymbiYosys source: `79fc9eddca5e33a28cc2f2cd19c9825efd9a7255`',
     f'- GitHub CLI: `{cmd(gh_bin, "--version").splitlines()[0]}`',
-    f'- GTKWave: `{cmd("dpkg-query", "-W", "-f=${Version}", "gtkwave")}`; GUI display: `{"available" if os.environ.get("DISPLAY") else "unavailable"}`',
+    f'- GTKWave: `{cmd("dpkg-query", "-W", "-f=${Version}", "gtkwave")}`; DISPLAY configured: `{bool(os.environ.get("DISPLAY"))}`; GUI launch: `NOT VERIFIED`',
 ]
 report = ROOT / 'reports/status.md'
 report.write_text('\n'.join(lines) + '\n')
