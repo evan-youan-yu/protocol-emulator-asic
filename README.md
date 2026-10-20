@@ -15,6 +15,6 @@ The project-local Conda environment is `.conda`. `make test` drives two distinct
 
 The current M1 instruction set supports SET, OE, WAIT, JMP, WAIT_PIN and HALT in a 16-word flip-flop memory. The design is an early ASIC-flow baseline, not a complete UART/SPI/I²C product. See [architecture](docs/architecture.md), [ISA](docs/isa.md), [host and pin map](docs/pin_map.md), [timing](docs/timing_contract.md), [verification](docs/verification_plan.md), and [setup](docs/setup.md).
 
-The official CMOS5L GDS, precheck, GL test and docs workflows remain in `.github/workflows`. A project GitHub Actions run and CMOS5L PDK are required before claiming GDS, DRC/LVS or 50 MHz timing. See [physical flow](docs/physical_flow.md) and [submission checklist](docs/competition_checklist.md).
+The official CMOS5L GDS, precheck, GL test and docs workflows remain in `.github/workflows`. GitHub Actions `test`, `verification`, and `docs` passed on the first push. The GDS workflow is running; see the timestamped [CI evidence](docs/ci_evidence.md). A completed physical report is required before claiming GDS, DRC/LVS or 50 MHz timing. See [physical flow](docs/physical_flow.md) and [submission checklist](docs/competition_checklist.md).
 
 For repository publication and workflow runs, see [GitHub setup](docs/github_setup.md). The project includes GitHub CLI in its Conda environment but does not store credentials.

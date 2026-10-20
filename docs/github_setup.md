@@ -1,17 +1,16 @@
 # GitHub publication and ASIC Actions
 
-This local repository currently has only an `upstream` remote pointing to the official Tiny Tapeout template. There is no user-owned `origin` remote and no authenticated GitHub CLI session. The `protocol-emulator-asic` name is proposed; the owner and final repository visibility must be confirmed before publishing.
+The public repository is [evan-youan-yu/protocol-emulator-asic](https://github.com/evan-youan-yu/protocol-emulator-asic). `origin` points there; `upstream` remains the official Tiny Tapeout template. GitHub CLI is installed in the project Conda environment. Authenticate a new machine separately with `gh auth login --hostname github.com --web`.
 
-After authenticating the GitHub connection or CLI, establish a public repository under the chosen owner, add it as `origin`, and push the reviewed `main` branch. The normal CLI path is:
+To inspect or rerun the official workflows:
 
 ```sh
 conda activate "$PWD/.conda"
-gh auth login --hostname github.com --web
-gh repo create OWNER/protocol-emulator-asic --public --source . --remote origin --push
-gh repo view OWNER/protocol-emulator-asic --json url,defaultBranchRef
-gh workflow list --repo OWNER/protocol-emulator-asic
+gh workflow list --repo evan-youan-yu/protocol-emulator-asic
+gh run list --repo evan-youan-yu/protocol-emulator-asic
+gh workflow run gds.yaml --repo evan-youan-yu/protocol-emulator-asic
 ```
 
-Replace `OWNER` with the confirmed account or organization. Never push to `upstream`. On first push, `.github/workflows/test.yaml`, `.github/workflows/verification.yaml`, and `.github/workflows/gds.yaml` may trigger automatically. Check each run and download its artifacts. Before interpreting physical results, verify that the run uses `ihp-sg13cmos5l`, then inspect synthesis area, routing, timing, precheck, and gate-level results. A configured workflow alone is not a PASS.
+The initial push at `ad51d20` triggered `test`, `verification`, `docs`, and `gds` workflows. The first three completed successfully. The `gds` [run 39417341092](https://github.com/evan-youan-yu/protocol-emulator-asic/actions/runs/39417341092) must be inspected separately for GDS, precheck, gate-level, and physical reports. Before interpreting physical results, verify that the run uses `ihp-sg13cmos5l`, then inspect synthesis area, routing, timing, precheck, and gate-level results. A configured workflow alone is not a PASS.
 
-If CLI authentication is unavailable, the connected GitHub app may provide repository and Actions access. Record the repository URL and run URL in the verification report once they actually exist.
+Do not push to `upstream`. Downloaded CI artifacts belong in the ignored `reports/ci/` directory. GitHub CLI authentication may appear unavailable inside a network-restricted sandbox even when the host session is authenticated; verify with `gh auth status` in a terminal with GitHub access.
